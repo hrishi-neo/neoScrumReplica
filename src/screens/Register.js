@@ -5,6 +5,8 @@ import normalize from 'react-native-normalize';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { useDispatch } from 'react-redux';
+import { register } from '../redux/action';
 
 const Register = ({ navigation }) => {
 
@@ -14,10 +16,32 @@ const Register = ({ navigation }) => {
     const [Perr, setPErr] = useState();
     const [imgUri, setimgUri] = useState(null)
     const [showmodal, setShowmodal] = useState(false)
+    const dispatch = useDispatch()
+    const onSubmit = () => {
+        const user = {
+            email,
+            password
+        }
+        let pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        if (email.length < 1 && password.length < 1) {
+            alert("Please fill all the details")
+        } else if (!pattern.test(String(email).toLowerCase())) {
+            alert("Invalid email")
+        }
+        else if (password.length < 8) {
+            alert("Password must be atleast 8 chars")
+        }
+        else {
+            dispatch(register(user))
+            navigation.navigate('Login')
+        }
 
+    }
     return (
         <KeyboardAwareScrollView contentContainerStyle={{ flex: 1, justifyContent: 'center' }}>
             <View style={styles.container}>
+                <Image resizeMode="contain" style={styles.img} source={require('../assets/images/logo.jpeg')} />
+
                 <Text style={styles.title}>Register</Text>
                 <CustomTextInput
                     label="Username"
@@ -59,13 +83,14 @@ const Register = ({ navigation }) => {
                         }
                     }}
                     secureTextEntry />
-                    {imgUri ? <Image style={styles.preview} source={{ uri: imgUri }} /> : null}
-                
+                {imgUri ? <Image style={styles.preview} source={{ uri: imgUri }} /> : null}
+
                 <TouchableOpacity
                     activeOpacity={0.5} onPress={() => {
                         setShowmodal(true)
+
                     }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 16 ,alignSelf:'center'}}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 16, alignSelf: 'center' }}>
                         <Icon
                             name="add"
                             color='#000'
@@ -75,7 +100,7 @@ const Register = ({ navigation }) => {
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    activeOpacity={0.5} onPress={() => { navigation.navigate('Login') }}
+                    activeOpacity={0.5} onPress={() => { onSubmit() }}
                     style={styles.btn}>
                     <Text style={{ color: 'black', fontSize: 16, }}>Register</Text>
                 </TouchableOpacity>
@@ -84,24 +109,24 @@ const Register = ({ navigation }) => {
                     animationType="slide"
                     style={{ height: 300 }}
                     visible={showmodal}
-                    onRequestClose={()=>{setShowmodal(false)}}>
+                    onRequestClose={() => { setShowmodal(false) }}>
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', padding: 8,borderBottomWidth:0.5 }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', padding: 8, borderBottomWidth: 0.5 }}>
                                 <Icon
                                     name="close"
                                     color='#000'
                                     size={28} onPress={() => {
                                         setShowmodal(false)
                                     }} />
-                                <Text style={{ paddingLeft: 8,fontSize:16 }}>Select an option</Text>
+                                <Text style={{ paddingLeft: 8, fontSize: 16 }}>Select an option</Text>
                             </View>
                             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 8, }}>
                                 <View style={{ padding: 16, justifyContent: 'center', alignItems: 'center' }}>
                                     <Icon
                                         name="camera"
                                         color='#000'
-                                        size={32} onPress={()=>{
+                                        size={32} onPress={() => {
                                             launchCamera({ quality: 0.5 }, (response) => {
                                                 const img = response.assets[0].uri
                                                 setimgUri(img)
@@ -138,17 +163,18 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: normalize(8),
         margin: normalize(8),
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor:'#fff'
     },
-    preview:{
+    preview: {
         width: normalize(200),
-         height: normalize(200),
-         marginTop:16,
-         borderRadius:16,
-         alignSelf:'center'
+        height: normalize(200),
+        marginTop: 16,
+        borderRadius: 16,
+        alignSelf: 'center'
     },
     btn: {
-        borderRadius: normalize(8),
+        borderRadius: normalize(20),
         padding: normalize(10),
         marginTop: normalize(24),
         marginLeft: normalize(8),
@@ -163,19 +189,24 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         padding: normalize(4)
     },
+    img: {
+        width: normalize(200),
+        height: normalize(100),
+        alignSelf: 'center'
+    },
     title: {
         fontSize: normalize(24),
         padding: normalize(8),
         alignSelf: 'center',
         marginBottom: normalize(24),
-
+        fontWeight: 'bold'
     },
     centeredView: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
         marginTop: 22,
-        
+
     },
     modalView: {
         margin: 20,

@@ -1,23 +1,25 @@
 import React from 'react'
-import { View, Text ,StyleSheet} from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import CustomFlatList from '../components/CustomFlatList'
-import data from '../assets/data/data'
+import { useSelector } from 'react-redux';
 
 
 const Home = () => {
+    const data = useSelector((state) => state.data);
+    console.log(data)
     return (
         <View style={styles.container}>
-            <CustomFlatList data={data} numofColumn={1}/>
+            <CustomFlatList data={data} numofColumn={1} />
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    container:{
-        
-        paddingBottom:60,
+    container: {
+
+        paddingBottom: 60,
         flex: 1,
-        
+
     }
 })
 export default Home

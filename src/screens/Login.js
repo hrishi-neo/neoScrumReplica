@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import CustomTextInput from '../components/CustomTextInput'
 import normalize from 'react-native-normalize';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { login } from '../redux/action';
 
 const Login = ({ navigation }) => {
 
@@ -10,10 +13,33 @@ const Login = ({ navigation }) => {
     const [password, setPassword] = useState('')
     const [err, setErr] = useState();
     const [Perr, setPErr] = useState();
+    const loggedIn = useSelector((state) => state.loggedIn);
+    const emailRedux = useSelector((state) => state.email);
+    const passRedux = useSelector((state) => state.password);
+    const dispatch = useDispatch()
 
+    const onSubmit = () => {
+        console.log(emailRedux)
+        if (email === emailRedux && password === passRedux) {
+            const user = {
+                email,
+                password
+            }
+            dispatch(login(user))
+            navigation.navigate('Home')
+        } else {
+            alert("Please check the email and password you've entered!")
+        }
+    }
+    useEffect(() => {
+        if (loggedIn == true) {
+            navigation.navigate('Home')
+        }
+    }, [])
     return (
-        <KeyboardAwareScrollView contentContainerStyle={{flex: 1,justifyContent:'center'}}>
-                <View style={styles.container}>
+        <KeyboardAwareScrollView contentContainerStyle={{ flex: 1, justifyContent: 'center' }}>
+            <View style={styles.container}>
+                <Image resizeMode="contain" style={styles.img} source={require('../assets/images/logo.jpeg')} />
                 <Text style={styles.title}>Login</Text>
                 <CustomTextInput
                     label="Username"
@@ -56,7 +82,7 @@ const Login = ({ navigation }) => {
                     }}
                     secureTextEntry />
                 <TouchableOpacity
-                    activeOpacity={0.5} onPress={() => { navigation.navigate('Home') }}
+                    activeOpacity={0.5} onPress={() => { onSubmit() }}
                     style={styles.btn}>
                     <Text style={{ color: 'black', fontSize: 16, }}>Login</Text>
                 </TouchableOpacity>
@@ -69,7 +95,7 @@ const Login = ({ navigation }) => {
                     onPress={() => { navigation.navigate('Register') }}>
                     <Text style={styles.link}>Don't have an account? Sign Up</Text>
                 </TouchableOpacity>
-                </View>
+            </View>
         </KeyboardAwareScrollView>
     )
 }
@@ -79,10 +105,16 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: normalize(8),
         margin: normalize(8),
-        justifyContent:'center'
+        justifyContent: 'center',
+        backgroundColor: '#fff'
+    },
+    img: {
+        width: normalize(200),
+        height: normalize(100),
+        alignSelf: 'center'
     },
     btn: {
-        borderRadius: normalize(8),
+        borderRadius: normalize(20),
         padding: normalize(10),
         marginTop: normalize(24),
         marginLeft: normalize(8),
@@ -102,7 +134,8 @@ const styles = StyleSheet.create({
         padding: normalize(8),
         alignSelf: 'center',
         marginBottom: normalize(24),
-       
+        fontWeight: 'bold'
+
     }
 })
 

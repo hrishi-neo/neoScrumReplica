@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, FlatList, StyleSheet, Dimensions, Image, TouchableOpacity } from 'react-native'
+import { View, Text, FlatList, StyleSheet,Image } from 'react-native'
 import CardView from 'react-native-cardview'
 import normalize from 'react-native-normalize';
 import LinearGradient from 'react-native-linear-gradient';
@@ -8,6 +8,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 const FeedbackList = ({ data }) => {
 
+   
     return (
         <KeyboardAwareScrollView >
             <View style={{ paddingBottom: 60 }}>
@@ -25,14 +26,8 @@ const FeedbackList = ({ data }) => {
                                             <Image style={styles.logo} source={require('../assets/images/avatar.png')} resizeMode="contain" />
                                             <Text style={styles.title}>{item.name}</Text>
                                             <View style={styles.line}></View>
-                                            <CustomFeedback />
-                                            <View style={{ marginBottom: 16, paddingRight: 8 }}>
-                                                <TouchableOpacity
-                                                    activeOpacity={0.5}
-                                                    style={styles.btn}>
-                                                    <Text style={{ color: 'white', fontSize: 16, }}>Submit Feedback</Text>
-                                                </TouchableOpacity>
-                                            </View>
+                                            <CustomFeedback item={item} />
+                                           
 
                                         </LinearGradient>
                                     </View>

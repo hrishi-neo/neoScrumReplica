@@ -7,8 +7,12 @@ import {
     Drawer,
 } from 'react-native-paper'
 import Icons from 'react-native-vector-icons/MaterialIcons';
-const DrawerContent = (props) => {
+import { useDispatch } from 'react-redux';
+import { logout } from '../redux/action';
 
+
+const DrawerContent = (props) => {
+const dispatch =useDispatch()
     return (
         <View style={{ flex: 1 }}>
 
@@ -41,6 +45,7 @@ const DrawerContent = (props) => {
 
             <Drawer.Section style={styles.bottomDrawerSection}>
                 <DrawerItem onPress={() => {
+                    dispatch(logout())
                     props.navigation.navigate('Login')
                 }
                 } icon={({ size }) => (<Icons color='#1E90FF'
