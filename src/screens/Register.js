@@ -17,6 +17,7 @@ const Register = ({ navigation }) => {
     const [imgUri, setimgUri] = useState(null)
     const [showmodal, setShowmodal] = useState(false)
     const dispatch = useDispatch()
+
     const onSubmit = () => {
         const user = {
             email,
@@ -37,8 +38,13 @@ const Register = ({ navigation }) => {
         }
 
     }
+
+    const gotoLogin = () => {
+        navigation.navigate('Login')
+    }
+
     return (
-        <KeyboardAwareScrollView contentContainerStyle={{ flex: 1, justifyContent: 'center' }}>
+        <KeyboardAwareScrollView contentContainerStyle={styles.contentStyle}>
             <View style={styles.container}>
                 <Image resizeMode="contain" style={styles.img} source={require('../assets/images/logo.jpeg')} />
 
@@ -88,9 +94,8 @@ const Register = ({ navigation }) => {
                 <TouchableOpacity
                     activeOpacity={0.5} onPress={() => {
                         setShowmodal(true)
-
                     }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 16, alignSelf: 'center' }}>
+                    <View style={styles.addPic}>
                         <Icon
                             name="add"
                             color='#000'
@@ -102,7 +107,12 @@ const Register = ({ navigation }) => {
                 <TouchableOpacity
                     activeOpacity={0.5} onPress={() => { onSubmit() }}
                     style={styles.btn}>
-                    <Text style={{ color: 'black', fontSize: 16, }}>Register</Text>
+                    <Text style={styles.btnView}>Register</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    activeOpacity={0.5} style={{ marginTop: normalize(16) }}
+                    onPress={() => { gotoLogin() }}>
+                    <Text style={styles.link}>Already have an account? Sign in</Text>
                 </TouchableOpacity>
                 <Modal
                     transparent={true}
@@ -112,17 +122,17 @@ const Register = ({ navigation }) => {
                     onRequestClose={() => { setShowmodal(false) }}>
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', padding: 8, borderBottomWidth: 0.5 }}>
+                            <View style={styles.mainView}>
                                 <Icon
                                     name="close"
                                     color='#000'
                                     size={28} onPress={() => {
                                         setShowmodal(false)
                                     }} />
-                                <Text style={{ paddingLeft: 8, fontSize: 16 }}>Select an option</Text>
+                                <Text style={styles.selectStyle}>Select an option</Text>
                             </View>
-                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 8, }}>
-                                <View style={{ padding: 16, justifyContent: 'center', alignItems: 'center' }}>
+                            <View style={styles.subView}>
+                                <View style={styles.imgView}>
                                     <Icon
                                         name="camera"
                                         color='#000'
@@ -135,8 +145,8 @@ const Register = ({ navigation }) => {
                                         }} />
                                     <Text>Camera</Text>
                                 </View >
-                                <Text style={{ padding: 16, }}>OR</Text>
-                                <View style={{ padding: 16, justifyContent: 'center', alignItems: 'center' }}>
+                                <Text style={styles.viewPadding}>OR</Text>
+                                <View style={styles.imgView}>
                                     <Icon
                                         name="attachment"
                                         color='#000'
@@ -164,7 +174,11 @@ const styles = StyleSheet.create({
         padding: normalize(8),
         margin: normalize(8),
         justifyContent: 'center',
-        backgroundColor:'#fff'
+        backgroundColor: '#fff'
+    },
+    contentStyle: {
+        flex: 1,
+        justifyContent: 'center'
     },
     preview: {
         width: normalize(200),
@@ -172,6 +186,31 @@ const styles = StyleSheet.create({
         marginTop: 16,
         borderRadius: 16,
         alignSelf: 'center'
+    },
+    mainView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 8,
+        borderBottomWidth: 0.5
+    },
+    viewPadding: {
+        padding: 16
+    },
+    addPic: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingTop: 16,
+        alignSelf: 'center'
+    },
+    subView: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 8,
+    },
+    selectStyle: {
+        paddingLeft: 8,
+        fontSize: 16
     },
     btn: {
         borderRadius: normalize(20),
@@ -189,6 +228,11 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         padding: normalize(4)
     },
+    imgView: {
+        padding: 16,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     img: {
         width: normalize(200),
         height: normalize(100),
@@ -200,6 +244,10 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginBottom: normalize(24),
         fontWeight: 'bold'
+    },
+    btnView: {
+        color: 'black',
+        fontSize: 16,
     },
     centeredView: {
         flex: 1,

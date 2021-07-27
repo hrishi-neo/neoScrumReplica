@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import CustomTextInput from '../components/CustomTextInput'
 import normalize from 'react-native-normalize';
@@ -13,7 +13,6 @@ const Login = ({ navigation }) => {
     const [password, setPassword] = useState('')
     const [err, setErr] = useState();
     const [Perr, setPErr] = useState();
-    const loggedIn = useSelector((state) => state.loggedIn);
     const emailRedux = useSelector((state) => state.email);
     const passRedux = useSelector((state) => state.password);
     const dispatch = useDispatch()
@@ -31,11 +30,11 @@ const Login = ({ navigation }) => {
             alert("Please check the email and password you've entered!")
         }
     }
-    useEffect(() => {
-        if (loggedIn == true) {
-            navigation.navigate('Home')
-        }
-    }, [])
+
+    const gotoRegister = () => {
+        navigation.navigate('Register')
+    }
+
     return (
         <KeyboardAwareScrollView contentContainerStyle={{ flex: 1, justifyContent: 'center' }}>
             <View style={styles.container}>
@@ -84,15 +83,11 @@ const Login = ({ navigation }) => {
                 <TouchableOpacity
                     activeOpacity={0.5} onPress={() => { onSubmit() }}
                     style={styles.btn}>
-                    <Text style={{ color: 'black', fontSize: 16, }}>Login</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{ marginTop: normalize(8) }}
-                    activeOpacity={0.5}>
-                    <Text style={styles.link}>Forgot password?</Text>
+                    <Text style={styles.btnView}>Login</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     activeOpacity={0.5} style={{ marginTop: normalize(16) }}
-                    onPress={() => { navigation.navigate('Register') }}>
+                    onPress={() => { gotoRegister()}}>
                     <Text style={styles.link}>Don't have an account? Sign Up</Text>
                 </TouchableOpacity>
             </View>
@@ -121,7 +116,10 @@ const styles = StyleSheet.create({
         marginRight: normalize(8),
         alignItems: 'center',
         backgroundColor: '#1E90FF'
-
+    },
+    btnView: {
+        color: 'black',
+        fontSize: 16,
     },
     link: {
         color: 'black',
@@ -135,7 +133,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginBottom: normalize(24),
         fontWeight: 'bold'
-
     }
 })
 

@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 const Home = () => {
     const data = useSelector((state) => state.data);
-    console.log(data)
+   
     return (
         <View style={styles.container}>
             <CustomFlatList data={data} numofColumn={1} />
@@ -16,10 +16,8 @@ const Home = () => {
 
 const styles = StyleSheet.create({
     container: {
-
         paddingBottom: 60,
         flex: 1,
-
     }
 })
 export default Home

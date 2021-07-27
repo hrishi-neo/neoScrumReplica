@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, FlatList, StyleSheet,Image } from 'react-native'
+import { View, Text, FlatList, StyleSheet, Image } from 'react-native'
 import CardView from 'react-native-cardview'
 import normalize from 'react-native-normalize';
 import LinearGradient from 'react-native-linear-gradient';
@@ -8,10 +8,10 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 const FeedbackList = ({ data }) => {
 
-   
+
     return (
         <KeyboardAwareScrollView >
-            <View style={{ paddingBottom: 60 }}>
+            <View style={styles.mainView}>
                 <FlatList data={data}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => {
@@ -27,7 +27,7 @@ const FeedbackList = ({ data }) => {
                                             <Text style={styles.title}>{item.name}</Text>
                                             <View style={styles.line}></View>
                                             <CustomFeedback item={item} />
-                                           
+
 
                                         </LinearGradient>
                                     </View>
@@ -45,7 +45,9 @@ const styles = StyleSheet.create({
         padding: normalize(8),
         margin: normalize(8),
     },
-
+    mainView: {
+        paddingBottom: 60
+    },
     cardView: {
         margin: normalize(8),
     },

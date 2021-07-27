@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         flexDirection: 'row',
-        borderBottomWidth: 1,
+        borderBottomWidth: 0.5,
         borderColor: 'black',
         justifyContent: 'center',
         height:normalize(50),
